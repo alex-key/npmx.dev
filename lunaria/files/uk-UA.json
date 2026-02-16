@@ -314,9 +314,9 @@
       "show_all": "показати всі {count} залежностей",
       "optional": "опціональні",
       "view_vulnerabilities": "Переглянути вразливості",
-      "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
-      "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
-      "outdated_patch": "Patch update available (latest: {latest})",
+      "outdated_major": "{count} мажорна версія відставання (остання: {latest}) | {count} мажорних версія відставання (остання: {latest})",
+      "outdated_minor": "{count} мінорна версія відставання (остання: {latest}) | {count} мінорних версія відставання (остання: {latest})",
+      "outdated_patch": "Доступне оновлення (остання версія: {latest})",
       "has_replacement": "Ця залежність має запропоновані заміни"
     },
     "peer_dependencies": {
@@ -361,15 +361,15 @@
       "y_axis_label": "{granularity} {facet}",
       "facet": "Аспект",
       "title": "Тенденції",
+      "contributors_skip": "Не показані в Супроводжувачах (немає GitHub репозиторія):",
       "items": {
         "downloads": "Завантаження",
-        "likes": "Вподобання"
+        "likes": "Вподобання",
+        "contributors": "Супроводжувачі"
       }
     },
     "downloads": {
       "title": "Завантажень на тиждень",
-      "modal_title": "Завантаження за тиждень",
-      "analyze": "Проаналізувати завантаження",
       "community_distribution": "Переглянути розподіл впровадження у спільноті"
     },
     "install_scripts": {
@@ -802,7 +802,7 @@
       "admin_description": "Ми також прагнемо надати кращий {adminUi} для керування вашими пакетами, командами та організаціями — усе з браузера, забезпечене вашим локальним npm CLI."
     },
     "what_we_are_not": {
-      "title": "Чим им не є",
+      "title": "Чим ми не є",
       "not_package_manager": "Не менеджер пакетів.",
       "not_registry": "Не реєстр.",
       "registry_description": "Ми не розміщуємо пакети. Ми просто кращий спосіб їх відображення.",
