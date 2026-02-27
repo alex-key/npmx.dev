@@ -104,10 +104,26 @@ export function useRelativeDates() {
  * Composable for accessing just the keyboard shortcuts setting.
  * Useful for components that only need to read this specific setting.
  */
-export function useKeyboardShortcuts() {
+export const useKeyboardShortcuts = createSharedComposable(function useKeyboardShortcuts() {
   const { settings } = useSettings()
-  return computed(() => settings.value.keyboardShortcuts)
-}
+  const enabled = computed(() => settings.value.keyboardShortcuts)
+
+  if (import.meta.client) {
+    watch(
+      enabled,
+      value => {
+        if (value) {
+          delete document.documentElement.dataset.kbdShortcuts
+        } else {
+          document.documentElement.dataset.kbdShortcuts = 'false'
+        }
+      },
+      { immediate: true },
+    )
+  }
+
+  return enabled
+})
 
 /**
  * Composable for managing accent color.
