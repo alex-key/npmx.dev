@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ClientOnly } from '#components'
 import type { IconClass } from '~/types'
 
 const props = withDefaults(
