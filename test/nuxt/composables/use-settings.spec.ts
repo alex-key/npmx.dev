@@ -1,29 +1,34 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('useSettings - keyboardShortcuts', () => {
   beforeEach(() => {
     localStorage.clear()
+    vi.resetModules()
   })
 
   afterEach(() => {
     // Reset the singleton so the next test gets a fresh instance
     localStorage.clear()
+    vi.resetModules()
   })
 
   describe('default value', () => {
-    it('should default keyboardShortcuts to true', () => {
+    it('should default keyboardShortcuts to true', async () => {
+      const { useSettings } = await import('../../../app/composables/useSettings')
       const { settings } = useSettings()
       expect(settings.value.keyboardShortcuts).toBe(true)
     })
   })
 
   describe('useKeyboardShortcuts composable', () => {
-    it('should return true by default', () => {
+    it('should return true by default', async () => {
+      const { useKeyboardShortcuts } = await import('../../../app/composables/useSettings')
       const enabled = useKeyboardShortcuts()
       expect(enabled.value).toBe(true)
     })
 
-    it('should reflect changes made via settings', () => {
+    it('should reflect changes made via settings', async () => {
+      const { useSettings } = await import('../../../app/composables/useSettings')
       const { settings } = useSettings()
       const enabled = useKeyboardShortcuts()
 
@@ -34,7 +39,9 @@ describe('useSettings - keyboardShortcuts', () => {
       expect(enabled.value).toBe(true)
     })
 
-    it('should be reactive', () => {
+    it('should be reactive', async () => {
+      const { useSettings } = await import('../../../app/composables/useSettings')
+      const { useKeyboardShortcuts } = await import('../../../app/composables/useSettings')
       const { settings } = useSettings()
       const enabled = useKeyboardShortcuts()
 
@@ -46,7 +53,8 @@ describe('useSettings - keyboardShortcuts', () => {
   })
 
   describe('persistence', () => {
-    it('should persist keyboardShortcuts=false to localStorage', () => {
+    it('should persist keyboardShortcuts=false to localStorage', async () => {
+      const { useSettings } = await import('../../../app/composables/useSettings')
       const { settings } = useSettings()
       settings.value.keyboardShortcuts = false
 
@@ -54,7 +62,8 @@ describe('useSettings - keyboardShortcuts', () => {
       expect(stored.keyboardShortcuts).toBe(false)
     })
 
-    it('should persist keyboardShortcuts=true to localStorage', () => {
+    it('should persist keyboardShortcuts=true to localStorage', async () => {
+      const { useSettings } = await import('../../../app/composables/useSettings')
       const { settings } = useSettings()
       settings.value.keyboardShortcuts = false
       settings.value.keyboardShortcuts = true
