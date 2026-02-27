@@ -40,6 +40,11 @@ export interface AppSettings {
     collapsed: string[]
     animateSparkline: boolean
   }
+  chartFilter: {
+    averageWindow: number
+    smoothingTau: number
+    anomaliesFixed: boolean
+  }
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -57,6 +62,11 @@ const DEFAULT_SETTINGS: AppSettings = {
   sidebar: {
     collapsed: [],
     animateSparkline: true,
+  },
+  chartFilter: {
+    averageWindow: 0,
+    smoothingTau: 1,
+    anomaliesFixed: true,
   },
 }
 
