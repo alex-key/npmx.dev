@@ -5,10 +5,12 @@ const { settings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
   e =>
+    keyboardShortcutsEnabled.value &&
     isKeyWithoutModifiers(e, 'Escape') &&
     !isEditableElement(e.target) &&
     !document.documentElement.matches('html:has(:modal)'),

@@ -26,7 +26,8 @@ const props = withDefaults(
 
 const el = useTemplateRef('el')
 
-const keyboardShortcutsEnabled = computed(() => import.meta.client && useKeyboardShortcuts().value)
+const keyboardShortcuts = useKeyboardShortcuts()
+const keyboardShortcutsEnabled = computed(() => import.meta.client && keyboardShortcuts.value)
 
 defineExpose({
   focus: () => el.value?.focus(),

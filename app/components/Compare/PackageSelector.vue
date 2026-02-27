@@ -97,11 +97,7 @@ function removePackage(name: string) {
   packages.value = packages.value.filter(p => p !== name)
 }
 
-const keyboardShortcutsEnabled = useKeyboardShortcuts()
-
 function handleKeydown(e: KeyboardEvent) {
-  if (!keyboardShortcutsEnabled) return
-
   const items = navigableItems.value
   const count = items.length
 
