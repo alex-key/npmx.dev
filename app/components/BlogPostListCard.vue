@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Author } from '#shared/schemas/blog'
 
-defineProps<{
+const props = defineProps<{
   /** Authors of the blog post */
   authors: Author[]
   /** Blog Title */
@@ -19,6 +19,8 @@ defineProps<{
   /** Whether this post is an unpublished draft */
   draft?: boolean
 }>()
+
+const formattedPublished = computed(() => toLocaleDateString(props.published))
 </script>
 
 <template>
@@ -33,7 +35,7 @@ defineProps<{
       <!-- Text Content -->
       <div class="flex-1 min-w-0 text-start gap-2">
         <div class="flex items-center gap-2">
-          <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
+          <span class="text-xs text-fg-muted font-mono">{{ formattedPublished }}</span>
           <span
             v-if="draft"
             class="text-xs px-1.5 py-0.5 rounded badge-orange font-sans font-medium"

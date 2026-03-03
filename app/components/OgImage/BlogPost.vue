@@ -17,18 +17,7 @@ const props = withDefaults(
 
 const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
 
-const formattedDate = computed(() => {
-  if (!props.date) return ''
-  try {
-    return new Date(props.date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-  } catch {
-    return props.date
-  }
-})
+const formattedDate = computed(() => toLocaleDateString(props.date))
 
 const MAX_VISIBLE_AUTHORS = 2
 

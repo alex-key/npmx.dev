@@ -4,3 +4,17 @@ export function toIsoDateString(date: Date): string {
   const day = String(date.getUTCDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
+
+export function toLocaleDateString(date: string): string {
+  if (!date) return ''
+
+  try {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  } catch {
+    return date
+  }
+}
