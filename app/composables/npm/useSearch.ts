@@ -1,6 +1,13 @@
-import type { NpmSearchResponse, NpmSearchResult, SearchProvider } from '#shared/types'
+import type {
+  NpmSearchResponse,
+  NpmSearchResult,
+  SearchProvider,
+  SearchResponse,
+  SearchResult,
+  SearchSuggestion,
+} from '#shared/types'
 import type { AlgoliaMultiSearchChecks } from './useAlgoliaSearch'
-import { type SearchSuggestion, emptySearchResponse, parseSuggestionIntent } from './search-utils'
+import { emptySearchResponse, parseSuggestionIntent } from './search-utils'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
 export const SEARCH_ENGINE_HITS_LIMIT: Record<SearchProvider, number> = {
@@ -8,13 +15,7 @@ export const SEARCH_ENGINE_HITS_LIMIT: Record<SearchProvider, number> = {
   npm: 5000,
 } as const
 
-function emptySearchPayload() {
-  return {
-    searchResponse: emptySearchResponse(),
-    suggestions: [] as SearchSuggestion[],
-    packageAvailability: null as { name: string; available: boolean } | null,
-  }
-}
+const DEFAULT_INITIAL_SEARCH_LIMIT = 25
 
 export interface SearchOptions {
   size?: number
@@ -75,6 +76,25 @@ export function useSearch(
       objects,
       totalUnlimited: total,
       total: Math.min(total, SEARCH_ENGINE_HITS_LIMIT[provider]),
+    }
+  }
+
+  function prepareSearchResponse(response: NpmSearchResponse | SearchResponse): SearchResponse {
+    const totalUnlimited: number =
+      'totalUnlimited' in response ? response.totalUnlimited : response.total
+
+    return {
+      ...response,
+      totalUnlimited,
+      total: Math.min(totalUnlimited, SEARCH_ENGINE_HITS_LIMIT[toValue(searchProvider)]),
+    }
+  }
+
+  function emptySearchPayload(): SearchResult {
+    return {
+      searchResponse: emptySearchResponse(),
+      suggestions: [],
+      packageAvailability: null,
     }
   }
 
@@ -166,7 +186,7 @@ export function useSearch(
     suggestionsLoading.value = false
   }
 
-  const asyncData = useLazyAsyncData(
+  const asyncData = useLazyAsyncData<SearchResult>(
     () => `search:${toValue(searchProvider)}:${toValue(query)}`,
     async (_nuxtApp, { signal }) => {
       const q = toValue(query)
@@ -185,7 +205,11 @@ export function useSearch(
 
         if (config.suggestions) {
           suggestionsLoading.value = true
-          const result = await algoliaMultiSearch(q, { size: opts.size ?? 25 }, checks)
+          const result = await algoliaMultiSearch(
+            q,
+            { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT },
+            checks,
+          )
 
           if (q !== toValue(query)) {
             return emptySearchPayload()
@@ -194,13 +218,13 @@ export function useSearch(
           isRateLimited.value = false
           processAlgoliaChecks(q, checks, result)
           return {
-            searchResponse: result.search,
+            searchResponse: prepareSearchResponse(result.search),
             suggestions: suggestions.value,
             packageAvailability: packageAvailability.value,
           }
         }
 
-        const response = await searchAlgolia(q, { size: opts.size ?? 25 })
+        const response = await searchAlgolia(q, { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT })
 
         if (q !== toValue(query)) {
           return emptySearchPayload()
@@ -208,14 +232,18 @@ export function useSearch(
 
         isRateLimited.value = false
         return {
-          searchResponse: response,
+          searchResponse: prepareSearchResponse(response),
           suggestions: [],
           packageAvailability: null,
         }
       }
 
       try {
-        const response = await searchNpm(q, { size: opts.size ?? 25 }, signal)
+        const response = await searchNpm(
+          q,
+          { size: opts.size ?? DEFAULT_INITIAL_SEARCH_LIMIT },
+          signal,
+        )
 
         if (q !== toValue(query)) {
           return emptySearchPayload()
@@ -225,7 +253,7 @@ export function useSearch(
 
         isRateLimited.value = false
         return {
-          searchResponse: response,
+          searchResponse: prepareSearchResponse(response),
           suggestions: [],
           packageAvailability: null,
         }
@@ -261,8 +289,7 @@ export function useSearch(
 
     // Seed cache from asyncData for Algolia (which skips cache on initial fetch)
     if (!cache.value && asyncData.data.value) {
-      const { searchResponse } = asyncData.data.value
-      setCache([...searchResponse.objects], searchResponse.total)
+      setCache([...searchResponse.objects], searchResponse.totalUnlimited)
     }
 
     const currentCount = cache.value?.objects.length ?? 0
@@ -326,7 +353,7 @@ export function useSearch(
     },
   )
 
-  const data = computed<NpmSearchResponse | null>(() => {
+  const data = computed<SearchResponse | null>(() => {
     if (cache.value) {
       return {
         isStale: false,
@@ -339,7 +366,7 @@ export function useSearch(
     return asyncData.data.value?.searchResponse ?? null
   })
 
-  const hasMore = computed(() => {
+  const hasMore = computed<boolean>(() => {
     if (!cache.value) return true
     return cache.value.objects.length < cache.value.total
   })

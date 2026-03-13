@@ -124,9 +124,24 @@ export interface NpmPerson {
 export interface NpmSearchResponse {
   isStale: boolean
   objects: NpmSearchResult[]
-  totalUnlimited?: number
   total: number
   time: string
+}
+
+export interface SearchResponse extends NpmSearchResponse {
+  totalUnlimited: number
+}
+
+export interface SearchSuggestion {
+  type: 'user' | 'org'
+  name: string
+  exists: boolean
+}
+
+export interface SearchResult {
+  searchResponse: SearchResponse
+  suggestions: SearchSuggestion[]
+  packageAvailability: { name: string; available: boolean } | null
 }
 
 export interface NpmSearchResult {

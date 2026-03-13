@@ -3,7 +3,7 @@ import {
   liteClient as algoliasearch,
   type LiteClient,
   type SearchQuery,
-  type SearchResponse,
+  type SearchResponse as AlgoliaSearchResponse,
 } from 'algoliasearch/lite'
 
 let _searchClient: LiteClient | null = null
@@ -157,7 +157,7 @@ export function useAlgoliaSearch() {
       ],
     })
 
-    const response = results[0] as SearchResponse<AlgoliaHit> | undefined
+    const response = results[0] as AlgoliaSearchResponse<AlgoliaHit> | undefined
     if (!response) {
       throw new Error('Algolia returned an empty response')
     }
@@ -165,8 +165,7 @@ export function useAlgoliaSearch() {
     return {
       isStale: false,
       objects: response.hits.map(hitToSearchResult),
-      totalUnlimited: response.nbHits ?? 0,
-      total: Math.min(SEARCH_ENGINE_HITS_LIMIT.algolia, response.nbHits ?? 0),
+      total: response.nbHits ?? 0,
       time: new Date().toISOString(),
     }
   }
@@ -203,7 +202,7 @@ export function useAlgoliaSearch() {
         ],
       })
 
-      const response = results[0] as SearchResponse<AlgoliaHit> | undefined
+      const response = results[0] as AlgoliaSearchResponse<AlgoliaHit> | undefined
       if (!response) break
 
       serverTotal = response.nbHits ?? 0
@@ -319,7 +318,7 @@ export function useAlgoliaSearch() {
 
     const { results } = await client.search({ requests })
 
-    const mainResponse = results[0] as SearchResponse<AlgoliaHit> | undefined
+    const mainResponse = results[0] as AlgoliaSearchResponse<AlgoliaHit> | undefined
     if (!mainResponse) {
       throw new Error('Algolia returned an empty response')
     }
@@ -327,14 +326,13 @@ export function useAlgoliaSearch() {
     const searchResult: NpmSearchResponse = {
       isStale: false,
       objects: mainResponse.hits.map(hitToSearchResult),
-      total: Math.min(SEARCH_ENGINE_HITS_LIMIT.algolia, mainResponse.nbHits ?? 0),
-      totalUnlimited: mainResponse.nbHits ?? 0,
+      total: mainResponse.nbHits ?? 0,
       time: new Date().toISOString(),
     }
 
     let orgExists = false
     if (orgQueryIndex >= 0 && checks?.name) {
-      const orgResponse = results[orgQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      const orgResponse = results[orgQueryIndex] as AlgoliaSearchResponse<AlgoliaHit> | undefined
       const scopePrefix = `@${checks.name.toLowerCase()}/`
       orgExists =
         orgResponse?.hits?.some(h => h.name?.toLowerCase().startsWith(scopePrefix)) ?? false
@@ -342,13 +340,15 @@ export function useAlgoliaSearch() {
 
     let userExists = false
     if (userQueryIndex >= 0) {
-      const userResponse = results[userQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      const userResponse = results[userQueryIndex] as AlgoliaSearchResponse<AlgoliaHit> | undefined
       userExists = (userResponse?.nbHits ?? 0) > 0
     }
 
     let packageExists: boolean | null = null
     if (packageQueryIndex >= 0) {
-      const pkgResponse = results[packageQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      const pkgResponse = results[packageQueryIndex] as
+        | AlgoliaSearchResponse<AlgoliaHit>
+        | undefined
       packageExists = (pkgResponse?.nbHits ?? 0) > 0
     }
 
