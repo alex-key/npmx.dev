@@ -409,6 +409,7 @@ export const numberFormats = Object.values(currentLocales).reduce((acc, data) =>
   const numberFormatsArray = data.numberFormats
   if (numberFormatsArray) {
     acc[data.code] = { ...numberFormatsArray }
+
     delete data.numberFormats
   } else {
     acc[data.code] = {

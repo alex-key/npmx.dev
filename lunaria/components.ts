@@ -257,7 +257,7 @@ export const TableContentStatus = (
   lunaria: LunariaInstance,
   fileType?: string,
 ): string => {
-  const localization = localizations.find(l => l.lang === lang)!
+  const localization = localizations.find(localizationItem => localizationItem.lang === lang)!
   const isMissingKeys = 'missingKeys' in localization && localization.missingKeys.length > 0
   // For dictionary files, status is determined solely by key completion:
   // if there are missing keys it's "outdated", if all keys are present it's "up-to-date",
@@ -339,7 +339,8 @@ function SvgLocaleSummary(
     file => file.localizations.find(l => l.lang === lang)?.status === 'missing',
   )
   const outdatedFiles = status.filter(file => {
-    const localization = file.localizations.find(l => l.lang === lang)
+    const localization = file.localizations.find(localizationItem => localizationItem.lang === lang)
+
     if (!localization || localization.status === 'missing') {
       return false
     } else if (file.type === 'dictionary') {
