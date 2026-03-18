@@ -72,6 +72,7 @@ const jsonStatus: I18nStatus = {
   sourceLocale: {
     lang: sourceLocale.lang,
     label: sourceLocale.label,
+    totalKeys,
   },
   locales: appLocales.map(locale => {
     const localization = fileStatus.localizations.find(l => l.lang === locale.code)
@@ -90,6 +91,7 @@ const jsonStatus: I18nStatus = {
     return {
       lang: locale.code,
       label: locale.name!,
+      dir: locale?.dir ?? 'rtl',
       totalKeys,
       completedKeys,
       missingKeys,

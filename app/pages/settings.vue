@@ -2,7 +2,7 @@
 const router = useRouter()
 const canGoBack = useCanGoBack()
 const { settings } = useSettings()
-const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
+const { locale: currentLocale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
@@ -232,8 +232,8 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <SelectField
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
-                  v-model="locale"
-                  @update:modelValue="setLocale($event as typeof locale)"
+                  v-model="currentLocale"
+                  @update:modelValue="setLocale($event as typeof currentLocale)"
                   block
                   size="sm"
                   class="max-w-48"
@@ -259,17 +259,15 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             </template>
 
             <!-- Simple help link for source locale -->
-            <template v-else>
-              <a
-                href="https://i18n.npmx.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+            <div>
+              <LinkBase
+                :to="{ name: 'translation-status' }"
+                class="font-sans text-fg-muted text-sm"
               >
                 <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
-                {{ $t('settings.help_translate') }}
-              </a>
-            </template>
+                {{ $t('settings.translation_status') }}
+              </LinkBase>
+            </div>
           </div>
         </section>
 
