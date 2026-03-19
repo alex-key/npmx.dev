@@ -6,9 +6,6 @@ import type { SearchProvider } from '#shared/types'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
-type AccentColorId = keyof typeof ACCENT_COLORS.light
-/** Available search providers */
-export type SearchProvider = 'npm' | 'algolia'
 
 /**
  * Application settings stored in localStorage

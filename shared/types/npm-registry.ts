@@ -103,6 +103,7 @@ export interface PackageVersionInfo {
   deprecated?: string
 }
 
+/** Available search providers */
 export type SearchProvider = 'npm' | 'algolia'
 
 /**
