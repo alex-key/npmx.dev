@@ -140,7 +140,7 @@ const LocaleDetails = (status: I18nStatus, locale: Locale): string => {
 	`
 }
 
-export const MissingKeysList = (missingKeys: string[]): string => {
+const MissingKeysList = (missingKeys: string[]): string => {
   return html`<details>
       <summary>Show missing keys</summary>
 			<ul>
@@ -158,7 +158,6 @@ const ContentDetailsLinks = (
 		${Link(githubHistoryUrl, 'source change history')}
 	`
 }
-
 
 const ProgressBar = (percentComplete: number): string => {
   let barClass = 'completed'
@@ -204,7 +203,7 @@ const TitleParagraph = html`
 
 // Components from here are not used at the moment
 // Do not delete as we might use it if we split translations in multiple files for locale
-const StatusByFile = (
+const _StatusByFile = (
   config: LunariaConfig,
   status: LunariaStatus,
   lunaria: LunariaInstance,
@@ -301,14 +300,14 @@ const EmojiFileLink = (
 			</span>`
 }
 
-const CreateFileLink = (href: string, text: string): string => {
+const _CreateFileLink = (href: string, text: string): string => {
   return html`<a class="create-button" href="${href}">${text}</a>`
 }
 
 /**
  * Build an SVG file showing a summary of each language's translation progress.
  */
-const SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
+const _SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
   const localeHeight = 56 // Each locale’s summary is 56px high.
   const svgHeight = localeHeight * Math.ceil(config.locales.length / 2)
   return html`<svg

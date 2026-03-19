@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export type CompletionColorScheme = {
+type CompletionColorScheme = {
   low: number
   medium: number
   high: number
