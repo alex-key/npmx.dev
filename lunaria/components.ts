@@ -50,7 +50,7 @@ export const Page = (
 	`
 }
 
-export const Meta = html`
+const Meta = html`
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 	<title>npmx - Translation Status</title>
@@ -74,7 +74,7 @@ export const Meta = html`
 	<link rel="icon" href="https://npmx.dev/favicon.svg" type="image/svg+xml" />
 `
 
-export const Body = (config: LunariaConfig, status: I18nStatus): string => {
+const Body = (config: LunariaConfig, status: I18nStatus): string => {
   return html`
 		<main>
 			<div class="limit-to-viewport">
@@ -85,7 +85,7 @@ export const Body = (config: LunariaConfig, status: I18nStatus): string => {
 	`
 }
 
-export const StatusByLocale = (config: LunariaConfig, status: I18nStatus): string => {
+const StatusByLocale = (config: LunariaConfig, status: I18nStatus): string => {
   const { locales } = config
   return html`
 		<h2 id="by-locale">
@@ -95,7 +95,7 @@ export const StatusByLocale = (config: LunariaConfig, status: I18nStatus): strin
 	`
 }
 
-export const LocaleDetails = (status: I18nStatus, locale: Locale): string => {
+const LocaleDetails = (status: I18nStatus, locale: Locale): string => {
   const { label, lang } = locale
   const localeStatus = status.locales.find(s => s.lang === lang)
 
@@ -149,7 +149,7 @@ export const MissingKeysList = (missingKeys: string[]): string => {
 	</details>`
 }
 
-export const ContentDetailsLinks = (
+const ContentDetailsLinks = (
   githubEditLink: { text: string; url: string },
   githubHistoryUrl: string,
 ): string => {
@@ -159,7 +159,8 @@ export const ContentDetailsLinks = (
 	`
 }
 
-export const ProgressBar = (percentComplete: number): string => {
+
+const ProgressBar = (percentComplete: number): string => {
   let barClass = 'completed'
 
   if (percentComplete > 99) {
@@ -181,11 +182,11 @@ export const ProgressBar = (percentComplete: number): string => {
 	`
 }
 
-export const Link = (href: string, text: string): string => {
+const Link = (href: string, text: string): string => {
   return html`<a href="${href}" target="_blank">${text}</a>`
 }
 
-export const TitleParagraph = html`
+const TitleParagraph = html`
   <p>
     If you're interested in helping us translate
     <a href="https://npmx.dev/">npmx.dev</a> into one of the languages listed below, you've come to
@@ -203,7 +204,7 @@ export const TitleParagraph = html`
 
 // Components from here are not used at the moment
 // Do not delete as we might use it if we split translations in multiple files for locale
-export const StatusByFile = (
+const StatusByFile = (
   config: LunariaConfig,
   status: LunariaStatus,
   lunaria: LunariaInstance,
@@ -227,11 +228,7 @@ export const StatusByFile = (
 	`
 }
 
-export const TableBody = (
-  status: LunariaStatus,
-  locales: Locale[],
-  lunaria: LunariaInstance,
-): string => {
+const TableBody = (status: LunariaStatus, locales: Locale[], lunaria: LunariaInstance): string => {
   const links = lunaria.gitHostingLinks()
 
   return html`
@@ -251,7 +248,7 @@ export const TableBody = (
 	`
 }
 
-export const TableContentStatus = (
+const TableContentStatus = (
   localizations: StatusEntry['localizations'],
   lang: string,
   lunaria: LunariaInstance,
@@ -279,7 +276,7 @@ export const TableContentStatus = (
   return html`<td>${EmojiFileLink(link, status)}</td>`
 }
 
-export const EmojiFileLink = (
+const EmojiFileLink = (
   href: string | null,
   type: 'missing' | 'outdated' | 'up-to-date',
 ): string => {
@@ -304,14 +301,14 @@ export const EmojiFileLink = (
 			</span>`
 }
 
-export const CreateFileLink = (href: string, text: string): string => {
+const CreateFileLink = (href: string, text: string): string => {
   return html`<a class="create-button" href="${href}">${text}</a>`
 }
 
 /**
  * Build an SVG file showing a summary of each language's translation progress.
  */
-export const SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
+const SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
   const localeHeight = 56 // Each locale’s summary is 56px high.
   const svgHeight = localeHeight * Math.ceil(config.locales.length / 2)
   return html`<svg
