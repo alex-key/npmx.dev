@@ -91,7 +91,7 @@ const jsonStatus: I18nStatus = {
     return {
       lang: locale.code,
       label: locale.name!,
-      dir: locale?.dir ?? 'rtl',
+      dir: locale?.dir ?? 'ltr',
       totalKeys,
       completedKeys,
       missingKeys,
