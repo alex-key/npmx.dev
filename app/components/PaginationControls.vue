@@ -208,9 +208,7 @@ function handlePageSizeChange(event: Event) {
             :disabled="isPageButtonDisabled(page)"
             class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:(ring-2 ring-fg ring-offset-1) disabled:(opacity-40 cursor-not-allowed)"
             :class="
-              page === currentPage
-                ? 'bg-fg text-bg'
-                : 'text-fg-muted hover:(text-fg bg-bg-muted)'
+              page === currentPage ? 'bg-fg text-bg' : 'text-fg-muted hover:(text-fg bg-bg-muted)'
             "
             :aria-current="page === currentPage ? 'page' : undefined"
             @click="goToPage(page)"
