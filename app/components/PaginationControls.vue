@@ -191,7 +191,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Previous button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="p-1.5 rounded text-fg-muted transition-colors duration-200 hover:(text-fg bg-bg-muted) focus-visible:(ring-2 ring-fg ring-offset-1) disabled:(opacity-40 cursor-not-allowed)"
           :disabled="!canGoPrev"
           :aria-label="$t('filters.pagination.previous')"
           @click="goPrev"
@@ -206,11 +206,11 @@ function handlePageSizeChange(event: Event) {
             v-else
             type="button"
             :disabled="isPageButtonDisabled(page)"
-            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:(ring-2 ring-fg ring-offset-1) disabled:(opacity-40 cursor-not-allowed)"
             :class="
               page === currentPage
                 ? 'bg-fg text-bg'
-                : 'text-fg-muted hover:text-fg hover:bg-bg-muted'
+                : 'text-fg-muted hover:(text-fg bg-bg-muted)'
             "
             :aria-current="page === currentPage ? 'page' : undefined"
             @click="goToPage(page)"
@@ -222,7 +222,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Next button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="p-1.5 rounded text-fg-muted transition-colors duration-200 hover:(text-fg bg-bg-muted) focus-visible:(ring-2 ring-fg ring-offset-1) disabled:(opacity-40 cursor-not-allowed)"
           :disabled="!canGoNext"
           :aria-label="$t('filters.pagination.next')"
           @click="goNext"
