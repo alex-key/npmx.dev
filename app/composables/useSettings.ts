@@ -243,9 +243,6 @@ export function useCodeContainer() {
   const { settings } = useSettings()
   const isMounted = useMounted()
 
-  // Gate behind isMounted so SSR and initial client render both produce `false`,
-  // eliminating the hydration mismatch. After mount, isMounted flips to true which
-  // IS a reactive change, so Vue patches the class correctly from localStorage.
   const codeContainerFull = computed(() => isMounted.value && settings.value.codeContainerFull)
 
   function toggleCodeContainer() {

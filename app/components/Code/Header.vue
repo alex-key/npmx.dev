@@ -138,7 +138,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           <span class="text-fg-subtle">/</span>
           <span ref="pathDropdownButtonRef">
             <ButtonBase
-              size="small"
+              size="sm"
               class="px-2 mx-1"
               :aria-label="$t('code.open_path_dropdown')"
               :aria-expanded="isPathDropdownOpen"
@@ -178,13 +178,11 @@ useEventListener('keydown', (event: KeyboardEvent) => {
               aria-hidden="true"
               class="relative h-5 w-4 shrink-0"
             >
+              <!-- add └ mark to better visualize nested folders) -->
               <template v-if="level === index">
-                <!-- vertical: top of row down to vertical midpoint -->
                 <span class="absolute top-0 bottom-1/2 left-2 w-px bg-fg-subtle/50" />
-                <!-- horizontal: midpoint across to right edge of span -->
                 <span class="absolute top-1/2 left-2 right-0 h-px bg-fg-subtle/50" />
               </template>
-              <!-- intermediate levels: empty spacer (correct for └, not ├) -->
             </span>
             <span :class="{ 'pl-1': index > 0 }" class="min-w-0 break-all"
               >{{ crumb.name }}<span class="text-fg-subtle">/</span></span
@@ -229,7 +227,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
             v-if="selectedLines"
             class="py-1 px-3"
             :classicon="permalinkCopied ? 'i-lucide:check' : 'i-lucide:file-braces-corner'"
-            :aria-label="$t('code.copy_selected')"
+            :aria-label="$t('code.copy_link')"
             @click="copyPermalinkUrl"
           />
           <ButtonBase
