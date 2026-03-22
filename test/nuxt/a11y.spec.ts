@@ -146,7 +146,9 @@ import {
   ChartPatternSlot,
   CodeDirectoryListing,
   CodeFileTree,
+  CodeHeader,
   CodeMobileTreeDrawer,
+  CodeSkeletonLoader,
   CodeViewer,
   CopyToClipboardButton,
   CollapsibleSection,
@@ -1153,6 +1155,36 @@ describe('component accessibility audits', () => {
           keywords: ['keyword1', 'keyword2'],
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeHeader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeHeader, {
+        props: {
+          html: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+          filePath: 'dir1/dir2/sourcefile.js',
+          loading: false,
+          isViewingFile: true,
+          isBinaryFile: false,
+          fileContent: '<pre><code><span class="line">const x = 1;</span></code></pre>',
+          markdownViewMode: 'preview',
+          selectedLines: null,
+          getCodeUrlWithPath: path => path,
+          packageName: 'vite',
+          version: '1.0.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+  
+  describe('CodeSkeletonLoader', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CodeSkeletonLoader)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
