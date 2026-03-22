@@ -1,4 +1,3 @@
-import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
@@ -38,6 +37,7 @@ export interface AppSettings {
     /** Automatically open the web auth page in the browser */
     autoOpenURL: boolean
   }
+  codeContainerFull: boolean
   sidebar: {
     collapsed: string[]
   }
@@ -63,6 +63,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   connector: {
     autoOpenURL: false,
   },
+  codeContainerFull: false,
   sidebar: {
     collapsed: [],
   },
@@ -211,5 +212,24 @@ export function useBackgroundTheme() {
     backgroundThemes,
     selectedBackgroundTheme: computed(() => settings.value.preferredBackgroundTheme),
     setBackgroundTheme,
+  }
+}
+
+export function useCodeContainer() {
+  const { settings } = useSettings()
+  const isMounted = useMounted()
+
+  // Gate behind isMounted so SSR and initial client render both produce `false`,
+  // eliminating the hydration mismatch. After mount, isMounted flips to true which
+  // IS a reactive change, so Vue patches the class correctly from localStorage.
+  const codeContainerFull = computed(() => isMounted.value && settings.value.codeContainerFull)
+
+  function toggleCodeContainer() {
+    settings.value.codeContainerFull = !settings.value.codeContainerFull
+  }
+
+  return {
+    codeContainerFull,
+    toggleCodeContainer,
   }
 }
