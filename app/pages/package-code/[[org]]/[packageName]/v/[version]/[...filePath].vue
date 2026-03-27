@@ -291,7 +291,7 @@ defineOgImageComponent('Default', {
 onPrehydrate(() => {
   const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   const container = document.getElementById('code-page-container')
-  
+
   if (settingsSaved?.codeContainerFull === true && container) {
     container!.classList.add('max-w-full', 'border-0')
   }
