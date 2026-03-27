@@ -619,11 +619,7 @@
       "downloads_day": "डाउनलोड/दिन",
       "downloads_month": "डाउनलोड/महिना",
       "downloads_year": "डाउनलोड/वर्ष",
-      "name": "नाम",
-      "quality": "क्वालिटी",
-      "popularity": "लोकप्रियता",
-      "maintenance": "मेन्टेनेन्स",
-      "score": "स्कोर"
+      "name": "नाम"
     },
     "columns": {
       "title": "स्तम्भहरू",
@@ -636,10 +632,6 @@
       "downloads": "डाउनलोड/हप्ता",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
-      "quality_score": "क्वालिटी स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "मेन्टेनेन्स स्कोर",
-      "combined_score": "समग्र स्कोर",
       "security": "सिक्युरिटी"
     },
     "view_mode": {
@@ -799,14 +791,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "तुलना पक्षहरू",
       "all": "सबै",
       "none": "कुनै पनि छैन",
       "coming_soon": "छिट्टै आउँदैछ",
       "select_all": "सबै पक्षहरू चयन गर्नुहोस्",
       "deselect_all": "सबै पक्षहरू हटाउनुहोस्",
-      "select_category": "सबै {category} पक्षहरू चयन गर्नुहोस्",
-      "deselect_category": "सबै {category} पक्षहरू हटाउनुहोस्",
       "categories": {
         "performance": "परफर्मेन्स",
         "health": "हेल्थ",

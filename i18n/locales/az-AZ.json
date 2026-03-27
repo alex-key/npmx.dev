@@ -850,11 +850,7 @@
       "downloads_month": "Endirmələr/ay",
       "downloads_year": "Endirmələr/il",
       "published": "Son Dərc",
-      "name": "Ad",
-      "quality": "Keyfiyyət",
-      "popularity": "Populyarlıq",
-      "maintenance": "Baxım",
-      "score": "Xal"
+      "name": "Ad"
     },
     "columns": {
       "title": "Sütunlar",
@@ -868,10 +864,6 @@
       "published": "Son Dərc",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
-      "quality_score": "Keyfiyyət xalı",
-      "popularity_score": "Populyarlıq xalı",
-      "maintenance_score": "Baxım xalı",
-      "combined_score": "Ümumi xal",
       "security": "Təhlükəsizlik"
     },
     "view_mode": {
@@ -1057,14 +1049,11 @@
       "add_column": "Müqayisəyə asılılıqsız sütun əlavə et"
     },
     "facets": {
-      "group_label": "Müqayisə aspektləri",
       "all": "hamısı",
       "none": "heç biri",
       "coming_soon": "Tezliklə",
       "select_all": "Bütün aspektləri seç",
       "deselect_all": "Bütün aspektləri ləğv et",
-      "select_category": "Bütün {category} aspektlərini seç",
-      "deselect_category": "Bütün {category} aspektlərini ləğv et",
       "binary_only_tooltip": "Bu paket yalnız binar fayllar təqdim edir, ixrac yoxdur",
       "categories": {
         "performance": "Performans",

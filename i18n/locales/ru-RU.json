@@ -850,11 +850,7 @@
       "downloads_month": "Загрузок/мес",
       "downloads_year": "Загрузок/год",
       "published": "Опубликован",
-      "name": "Имя",
-      "quality": "Качество",
-      "popularity": "Популярность",
-      "maintenance": "Поддержка",
-      "score": "Оценка"
+      "name": "Имя"
     },
     "columns": {
       "title": "Столбцы",
@@ -868,10 +864,6 @@
       "published": "Опубликован",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
-      "quality_score": "Оценка качества",
-      "popularity_score": "Оценка популярности",
-      "maintenance_score": "Оценка поддержки",
-      "combined_score": "Общая оценка",
       "security": "Безопасность"
     },
     "view_mode": {
@@ -1057,14 +1049,11 @@
       "add_column": "Добавить колонку «без зависимости» в сравнение"
     },
     "facets": {
-      "group_label": "Параметры сравнения",
       "all": "все",
       "none": "ни одного",
       "coming_soon": "Скоро появится",
       "select_all": "Выбрать все параметры",
       "deselect_all": "Снять выбор со всех",
-      "select_category": "Выбрать все параметры в категории {category}",
-      "deselect_category": "Снять выбор со всех в категории {category}",
       "binary_only_tooltip": "Этот пакет предоставляет исполняемые файлы и не имеет экспортируемых модулей",
       "categories": {
         "performance": "Производительность",

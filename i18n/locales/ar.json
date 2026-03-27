@@ -746,11 +746,7 @@
       "downloads_month": "التنزيلات/الشهر",
       "downloads_year": "التنزيلات/السنة",
       "published": "آخر نشر",
-      "name": "الاسم",
-      "quality": "الجودة",
-      "popularity": "الشعبية",
-      "maintenance": "الصيانة",
-      "score": "التنقيط"
+      "name": "الاسم"
     },
     "columns": {
       "title": "الأعمدة",
@@ -764,10 +760,6 @@
       "published": "آخر نشر",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
-      "quality_score": "درجة الجودة",
-      "popularity_score": "درجة الشعبية",
-      "maintenance_score": "درجة الصيانة",
-      "combined_score": "الدرجة المجمعة",
       "security": "الأمان"
     },
     "view_mode": {
@@ -943,14 +935,11 @@
       "add_column": "إضافة عمود «بدون تبعية» إلى المقارنة"
     },
     "facets": {
-      "group_label": "محاور المقارنة",
       "all": "الكل",
       "none": "لا شيء",
       "coming_soon": "قريبًا",
       "select_all": "تحديد كل المحاور",
       "deselect_all": "إلغاء تحديد كل المحاور",
-      "select_category": "تحديد جميع محاور {category}",
-      "deselect_category": "إلغاء تحديد جميع محاور {category}",
       "binary_only_tooltip": "هذه الحزمة تعرض ملفات تنفيذية فقط دون تصديرات",
       "categories": {
         "performance": "الأداء",

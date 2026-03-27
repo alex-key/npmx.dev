@@ -850,11 +850,7 @@
       "downloads_month": "Aylık indirmeler",
       "downloads_year": "Yıllık indirmeler",
       "published": "Yayınlanma tarihi",
-      "name": "Ad",
-      "quality": "Kalite",
-      "popularity": "Popülerlik",
-      "maintenance": "Bakım",
-      "score": "Skor"
+      "name": "Ad"
     },
     "columns": {
       "title": "Sütunlar",
@@ -868,10 +864,6 @@
       "published": "Yayınlandı",
       "maintainers": "Geliştiriciler",
       "keywords": "Anahtar kelimeler",
-      "quality_score": "Kalite skoru",
-      "popularity_score": "Popülerlik skoru",
-      "maintenance_score": "Bakım skoru",
-      "combined_score": "Birleşik skor",
       "security": "Güvenlik"
     },
     "view_mode": {
@@ -1057,14 +1049,11 @@
       "add_column": "Sütun ekle"
     },
     "facets": {
-      "group_label": "Özellik grubu",
       "all": "Tümü",
       "none": "Hiçbiri",
       "coming_soon": "Yakında",
       "select_all": "Tümünü seç",
       "deselect_all": "Tümünün seçimini kaldır",
-      "select_category": "{category} kategorisini seç",
-      "deselect_category": "{category} kategorisinin seçimini kaldır",
       "binary_only_tooltip": "Yalnızca binary paketler için",
       "categories": {
         "performance": "Performans",

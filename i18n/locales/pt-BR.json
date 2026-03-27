@@ -878,11 +878,7 @@
       "downloads_month": "Downloads/mês",
       "downloads_year": "Downloads/ano",
       "published": "Última publicação",
-      "name": "Nome",
-      "quality": "Qualidade",
-      "popularity": "Popularidade",
-      "maintenance": "Manutenção",
-      "score": "Pontuação"
+      "name": "Nome"
     },
     "columns": {
       "title": "Colunas",
@@ -896,10 +892,6 @@
       "published": "Última publicação",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
-      "quality_score": "Pontuação de qualidade",
-      "popularity_score": "Pontuação de popularidade",
-      "maintenance_score": "Pontuação de manutenção",
-      "combined_score": "Pontuação combinada",
       "security": "Segurança",
       "selection": "Selecionar pacote"
     },
@@ -1088,14 +1080,11 @@
       "add_column": "Adicionar coluna sem dependência à comparação"
     },
     "facets": {
-      "group_label": "Aspectos de comparação",
       "all": "todos",
       "none": "nenhum",
       "coming_soon": "Em breve",
       "select_all": "Selecionar todos os aspectos",
       "deselect_all": "Desselecionar todos os aspectos",
-      "select_category": "Selecionar todos os aspectos {category}",
-      "deselect_category": "Desselecionar todos os aspectos {category}",
       "binary_only_tooltip": "Este pacote expõe binários e nenhuma exportação",
       "categories": {
         "performance": "Performance",

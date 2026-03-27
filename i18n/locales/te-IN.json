@@ -634,11 +634,7 @@
       "downloads_day": "డౌన్‌లోడ్‌లు/రోజు",
       "downloads_month": "డౌన్‌లోడ్‌లు/నెల",
       "downloads_year": "డౌన్‌లోడ్‌లు/సంవత్సరం",
-      "name": "పేరు",
-      "quality": "నాణ్యత",
-      "popularity": "జనాదరణ",
-      "maintenance": "నిర్వహణ",
-      "score": "స్కోర్"
+      "name": "పేరు"
     },
     "columns": {
       "title": "కాలమ్‌లు",
@@ -651,10 +647,6 @@
       "downloads": "డౌన్‌లోడ్‌లు/వారం",
       "maintainers": "నిర్వహకులు",
       "keywords": "కీవర్డ్‌లు",
-      "quality_score": "నాణ్యత స్కోర్",
-      "popularity_score": "జనాదరణ స్కోర్",
-      "maintenance_score": "నిర్వహణ స్కోర్",
-      "combined_score": "సంయుక్త స్కోర్",
       "security": "భద్రత"
     },
     "view_mode": {
@@ -814,14 +806,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "పోలిక ఫేసెట్‌లు",
       "all": "అన్నీ",
       "none": "ఏదీ లేదు",
       "coming_soon": "త్వరలో వస్తుంది",
       "select_all": "అన్ని ఫేసెట్‌లను ఎంచుకోండి",
       "deselect_all": "అన్ని ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
-      "select_category": "అన్ని {category} ఫేసెట్‌లను ఎంచుకోండి",
-      "deselect_category": "అన్ని {category} ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
       "categories": {
         "performance": "పనితీరు",
         "health": "ఆరోగ్యం",

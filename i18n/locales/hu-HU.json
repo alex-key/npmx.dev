@@ -811,11 +811,7 @@
       "downloads_month": "Letöltés/hó",
       "downloads_year": "Letöltés/év",
       "published": "Utoljára közzétéve",
-      "name": "Név",
-      "quality": "Minőség",
-      "popularity": "Népszerűség",
-      "maintenance": "Karbantartás",
-      "score": "Pontszám"
+      "name": "Név"
     },
     "columns": {
       "title": "Oszlopok",
@@ -829,10 +825,6 @@
       "published": "Utoljára közzétéve",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
-      "quality_score": "Minőség pontszám",
-      "popularity_score": "Népszerűség pontszám",
-      "maintenance_score": "Karbantartás pontszám",
-      "combined_score": "Összesített pontszám",
       "security": "Biztonság"
     },
     "view_mode": {
@@ -1014,14 +1006,11 @@
       "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
     },
     "facets": {
-      "group_label": "Összehasonlítási aspektusok",
       "all": "összes",
       "none": "nincs",
       "coming_soon": "Hamarosan",
       "select_all": "Az összes aspektus kiválasztása",
       "deselect_all": "Az összes aspektus kijelölésének törlése",
-      "select_category": "Az összes {category} aspektus kiválasztása",
-      "deselect_category": "Az összes {category} aspektus kijelölésének törlése",
       "binary_only_tooltip": "Ez a csomag binárisokat mutat ki és nincsenek exportok",
       "categories": {
         "performance": "Teljesítmény",

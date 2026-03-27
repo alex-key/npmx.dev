@@ -881,11 +881,7 @@
       "downloads_month": "每月下載量",
       "downloads_year": "每年下載量",
       "published": "最近發布",
-      "name": "名稱",
-      "quality": "品質",
-      "popularity": "受歡迎度",
-      "maintenance": "維護程度",
-      "score": "分數"
+      "name": "名稱"
     },
     "columns": {
       "title": "欄位",
@@ -899,10 +895,6 @@
       "published": "最近發布",
       "maintainers": "維護者",
       "keywords": "關鍵字",
-      "quality_score": "品質分數",
-      "popularity_score": "受歡迎度分數",
-      "maintenance_score": "維護程度分數",
-      "combined_score": "總分",
       "security": "安全性",
       "selection": "選擇套件"
     },
@@ -1091,14 +1083,11 @@
       "add_column": "在比較中加入「無相依套件」欄位"
     },
     "facets": {
-      "group_label": "比較維度",
       "all": "全選",
       "none": "取消全選",
       "coming_soon": "即將推出",
       "select_all": "選擇所有維度",
       "deselect_all": "取消選擇所有維度",
-      "select_category": "選擇所有{category}維度",
-      "deselect_category": "取消選擇所有{category}維度",
       "binary_only_tooltip": "此套件僅提供二進位檔且沒有匯出",
       "categories": {
         "performance": "效能",

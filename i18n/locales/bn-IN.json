@@ -633,11 +633,7 @@
       "downloads_day": "ডাউনলোড/দিন",
       "downloads_month": "ডাউনলোড/মাস",
       "downloads_year": "ডাউনলোড/বছর",
-      "name": "নাম",
-      "quality": "গুণমান",
-      "popularity": "জনপ্রিয়তা",
-      "maintenance": "রক্ষণাবেক্ষণ",
-      "score": "স্কোর"
+      "name": "নাম"
     },
     "columns": {
       "title": "কলাম",
@@ -650,10 +646,6 @@
       "downloads": "ডাউনলোড/সপ্তাহ",
       "maintainers": "রক্ষণাবেক্ষণকারী",
       "keywords": "কীওয়ার্ড",
-      "quality_score": "গুণমান স্কোর",
-      "popularity_score": "জনপ্রিয়তা স্কোর",
-      "maintenance_score": "রক্ষণাবেক্ষণ স্কোর",
-      "combined_score": "সম্মিলিত স্কোর",
       "security": "নিরাপত্তা"
     },
     "view_mode": {
@@ -813,14 +805,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "তুলনা ফ্যাসেট",
       "all": "সব",
       "none": "কিছু না",
       "coming_soon": "শীঘ্রই আসছে",
       "select_all": "সব ফ্যাসেট নির্বাচন করুন",
       "deselect_all": "সব ফ্যাসেট অনির্বাচিত করুন",
-      "select_category": "সব {category} ফ্যাসেট নির্বাচন করুন",
-      "deselect_category": "সব {category} ফ্যাসেট অনির্বাচিত করুন",
       "categories": {
         "performance": "কর্মক্ষমতা",
         "health": "স্বাস্থ্য",

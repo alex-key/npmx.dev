@@ -701,11 +701,7 @@
       "downloads_month": "Nedlastinger/mnd",
       "downloads_year": "Nedlastinger/år",
       "published": "Sist publisert",
-      "name": "Navn",
-      "quality": "Kvalitet",
-      "popularity": "Popularitet",
-      "maintenance": "Vedlikehold",
-      "score": "Poengsum"
+      "name": "Navn"
     },
     "columns": {
       "title": "Kolonner",
@@ -719,10 +715,6 @@
       "published": "Sist publisert",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
-      "quality_score": "Kvalitetspoeng",
-      "popularity_score": "Popularitetspoeng",
-      "maintenance_score": "Vedlikeholdspoeng",
-      "combined_score": "Kombinert poengsum",
       "security": "Sikkerhet"
     },
     "view_mode": {
@@ -891,14 +883,11 @@
       "add_column": "Legg til ingen avhengighet-kolonne i sammenligningen"
     },
     "facets": {
-      "group_label": "Sammenligningsfasetter",
       "all": "alle",
       "none": "ingen",
       "coming_soon": "Kommer snart",
       "select_all": "Velg alle fasetter",
       "deselect_all": "Fravelg alle fasetter",
-      "select_category": "Velg alle {category}-fasetter",
-      "deselect_category": "Fravelg alle {category}-fasetter",
       "binary_only_tooltip": "Denne pakken eksponerer binærfiler og ingen eksporter",
       "categories": {
         "performance": "Ytelse",

@@ -869,11 +869,7 @@
       "downloads_month": "Unduhan/bulan",
       "downloads_year": "Unduhan/tahun",
       "published": "Paling Akhir Diterbitkan",
-      "name": "Nama",
-      "quality": "Kualitas",
-      "popularity": "Popularitas",
-      "maintenance": "Pemeliharaan",
-      "score": "Skor"
+      "name": "Nama"
     },
     "columns": {
       "title": "Kolom",
@@ -887,10 +883,6 @@
       "published": "Paling Akhir Diterbitkan",
       "maintainers": "Pemelihara",
       "keywords": "Kata kunci",
-      "quality_score": "Skor kualitas",
-      "popularity_score": "Skor popularitas",
-      "maintenance_score": "Skor pemeliharaan",
-      "combined_score": "Skor gabungan",
       "security": "Keamanan"
     },
     "view_mode": {
@@ -1078,14 +1070,11 @@
       "add_column": "Menambahkan kolom tanpa ketergantungan ke perbandingan"
     },
     "facets": {
-      "group_label": "Aspek perbandingan",
       "all": "semua",
       "none": "tidak ada",
       "coming_soon": "Segera hadir",
       "select_all": "Pilih semua aspek",
       "deselect_all": "Batalkan semua aspek",
-      "select_category": "Pilih semua aspek {category}",
-      "deselect_category": "Batalkan semua aspek {category}",
       "binary_only_tooltip": "Paket ini hanya mengekspos berkas biner dan bukan eksport",
       "categories": {
         "performance": "Performa",

@@ -884,11 +884,7 @@
       "downloads_month": "डाउनलोड्स/महिना",
       "downloads_year": "डाउनलोड्स/वर्ष",
       "published": "शेवटचे प्रकाशित",
-      "name": "नाव",
-      "quality": "गुणवत्ता",
-      "popularity": "लोकप्रियता",
-      "maintenance": "देखभाल",
-      "score": "स्कोर"
+      "name": "नाव"
     },
     "columns": {
       "title": "स्तंभ",
@@ -902,10 +898,6 @@
       "published": "शेवटचे प्रकाशित",
       "maintainers": "देखभालकर्ते",
       "keywords": "कीवर्ड्स",
-      "quality_score": "गुणवत्ता स्कोर",
-      "popularity_score": "लोकप्रियता स्कोर",
-      "maintenance_score": "देखभाल स्कोर",
-      "combined_score": "एकत्रित स्कोर",
       "security": "सुरक्षा",
       "selection": "पॅकेज निवडा"
     },
@@ -1095,14 +1087,11 @@
       "add_column": "तुलनेत निर्भरता नसलेला स्तंभ जोडा"
     },
     "facets": {
-      "group_label": "तुलना घटक",
       "all": "सर्व",
       "none": "काहीही नाही",
       "coming_soon": "लवकरच येत आहे",
       "select_all": "सर्व घटक निवडा",
       "deselect_all": "सर्व घटकांची निवड रद्द करा",
-      "select_category": "{category} मधील सर्व घटक निवडा",
-      "deselect_category": "{category} मधील सर्व घटकांची निवड रद्द करा",
       "binary_only_tooltip": "हे पॅकेज binaries उघड करते आणि exports नाहीत",
       "categories": {
         "performance": "कार्यक्षमता",

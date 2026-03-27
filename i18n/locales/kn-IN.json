@@ -634,11 +634,7 @@
       "downloads_day": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ದಿನ",
       "downloads_month": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ತಿಂಗಳು",
       "downloads_year": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ವರ್ಷ",
-      "name": "ಹೆಸರು",
-      "quality": "ಗುಣಮಟ್ಟ",
-      "popularity": "ಜನಪ್ರಿಯತೆ",
-      "maintenance": "ನಿರ್ವಹಣೆ",
-      "score": "ಸ್ಕೋರ್"
+      "name": "ಹೆಸರು"
     },
     "columns": {
       "title": "ಕಾಲಮ್‌ಗಳು",
@@ -651,10 +647,6 @@
       "downloads": "ಡೌನ್‌ಲೋಡ್‌ಗಳು/ವಾರ",
       "maintainers": "ನಿರ್ವಹಕರು",
       "keywords": "ಕೀವರ್ಡ್‌ಗಳು",
-      "quality_score": "ಗುಣಮಟ್ಟದ ಸ್ಕೋರ್",
-      "popularity_score": "ಜನಪ್ರಿಯತಾ ಸ್ಕೋರ್",
-      "maintenance_score": "ನಿರ್ವಹಣಾ ಸ್ಕೋರ್",
-      "combined_score": "ಸಂಯುಕ್ತ ಸ್ಕೋರ್",
       "security": "ಭದ್ರತೆ"
     },
     "view_mode": {
@@ -814,14 +806,11 @@
     },
     "no_dependency": {},
     "facets": {
-      "group_label": "ಹೋಲಿಕೆ ಫ್ಯಾಸೆಟ್‌ಗಳು",
       "all": "ಎಲ್ಲ",
       "none": "ಯಾವುದೂ ಇಲ್ಲ",
       "coming_soon": "ಶೀಘ್ರದಲ್ಲೇ",
       "select_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
       "deselect_all": "ಎಲ್ಲ ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
-      "select_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-      "deselect_category": "ಎಲ್ಲ {category} ಫ್ಯಾಸೆಟ್‌ಗಳನ್ನು ಅನಾಯ್ಕೆಮಾಡಿ",
       "categories": {
         "performance": "ಕಾರ್ಯಕ್ಷಮತೆ",
         "health": "ಆರೋಗ್ಯ",
