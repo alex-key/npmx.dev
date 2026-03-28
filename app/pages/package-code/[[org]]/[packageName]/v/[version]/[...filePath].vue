@@ -293,7 +293,7 @@ onPrehydrate(() => {
   const container = document.getElementById('code-page-container')
 
   if (settingsSaved?.codeContainerFull === true && container) {
-    console.log('add max-w-full');
+    console.log('add max-w-full')
     container!.classList.add('max-w-full', 'border-0')
   }
 })
