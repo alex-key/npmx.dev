@@ -293,6 +293,7 @@ onPrehydrate(() => {
   const container = document.getElementById('code-page-container')
 
   if (settingsSaved?.codeContainerFull === true && container) {
+    console.log('add max-w-full');
     container!.classList.add('max-w-full', 'border-0')
   }
 })
@@ -335,8 +336,8 @@ onPrehydrate(() => {
     <div
       v-else-if="!!fileTree"
       id="code-page-container"
-      class="container w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-is border-ie transition-mix-width duration-200 ease-in-out px-0"
-      :class="{ 'max-w-full border-0': codeContainerFull }"
+      class="w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-x px-0 mx-auto transition-[max-width] duration-300"
+      :class="[codeContainerFull ? 'max-w-full border-0' : 'container']"
       dir="ltr"
     >
       <!-- File tree sidebar - sticky with internal scroll -->
