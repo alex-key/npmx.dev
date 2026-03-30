@@ -1,9 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import {
   sum,
   chunkIntoWeeks,
   buildWeeklyEvolutionFromDaily,
-  addDays,
   clamp,
   quantile,
   winsorize,
@@ -12,11 +11,18 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
+  loadFile,
+  sanitise,
+  insertLineBreaks,
+  applyEllipsis,
+  createSeedNumber,
+  createSeededSvgPattern,
+  createChartPatternSlotMarkup,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
   type VersionsBarDataset,
-} from '../../../../app/utils/charts'
+} from '~/utils/charts'
 import type { AltCopyArgs } from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
@@ -321,59 +327,6 @@ describe('buildWeeklyEvolutionFromDaily', () => {
   })
 })
 
-describe('addDays', () => {
-  it('returns a new Date instance (does not mutate original)', () => {
-    const original = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(original, 5)
-
-    expect(result).not.toBe(original)
-    expect(original.toISOString()).toBe('2028-01-01T00:00:00.000Z')
-  })
-
-  it('adds positive days correctly', () => {
-    const date = new Date('2028-01-01T00:00:00Z')
-    const result = addDays(date, 10)
-
-    expect(result.toISOString()).toBe('2028-01-11T00:00:00.000Z')
-  })
-
-  it('subtracts days when negative value is provided', () => {
-    const date = new Date('2028-01-10T00:00:00Z')
-    const result = addDays(date, -5)
-
-    expect(result.toISOString()).toBe('2028-01-05T00:00:00.000Z')
-  })
-
-  it('handles month overflow correctly', () => {
-    const date = new Date('2028-01-28T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-02-02T00:00:00.000Z')
-  })
-
-  it('handles year overflow correctly', () => {
-    const date = new Date('2027-12-29T00:00:00Z')
-    const result = addDays(date, 5)
-
-    expect(result.toISOString()).toBe('2028-01-03T00:00:00.000Z')
-  })
-
-  it('handles leap year correctly', () => {
-    const date = new Date('2028-02-27T00:00:00Z') // 2028 is leap year
-    const result = addDays(date, 2)
-
-    expect(result.toISOString()).toBe('2028-02-29T00:00:00.000Z')
-  })
-
-  it('keeps UTC behavior consistent (no timezone drift)', () => {
-    const date = new Date('2028-03-01T00:00:00Z')
-    const result = addDays(date, 1)
-
-    expect(result.getUTCHours()).toBe(0)
-    expect(result.toISOString()).toBe('2028-03-02T00:00:00.000Z')
-  })
-})
-
 describe('clamp', () => {
   it('returns the value when it is within bounds', () => {
     expect(clamp(5, 0, 10)).toBe(5)
@@ -492,30 +445,30 @@ describe('winsorize', () => {
   })
 })
 
+const computeBaseTrend = (rSquared: number | null) => {
+  if (rSquared === null) return 'undefined' as const
+  if (rSquared > 0.75) return 'strong' as const
+  if (rSquared > 0.4) return 'weak' as const
+  return 'none' as const
+}
+
+const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
+  const values: number[] = []
+  for (let i = 0; i < 19; i += 1) {
+    const noise =
+      i % 4 === 0
+        ? noiseAmplitude
+        : i % 4 === 1
+          ? -noiseAmplitude
+          : i % 4 === 2
+            ? Math.floor(noiseAmplitude / 2)
+            : -Math.floor(noiseAmplitude / 2)
+    values.push(base + i * step + noise)
+  }
+  return values
+}
+
 describe('computeLineChartAnalysis', () => {
-  const computeBaseTrend = (rSquared: number | null) => {
-    if (rSquared === null) return 'undefined' as const
-    if (rSquared > 0.75) return 'strong' as const
-    if (rSquared > 0.4) return 'weak' as const
-    return 'none' as const
-  }
-
-  const buildSeries = (base: number, step: number, noiseAmplitude: number) => {
-    const values: number[] = []
-    for (let i = 0; i < 19; i += 1) {
-      const noise =
-        i % 4 === 0
-          ? noiseAmplitude
-          : i % 4 === 1
-            ? -noiseAmplitude
-            : i % 4 === 2
-              ? Math.floor(noiseAmplitude / 2)
-              : -Math.floor(noiseAmplitude / 2)
-      values.push(base + i * step + noise)
-    }
-    return values
-  }
-
   it('returns undefined interpretations for empty array', () => {
     const result = computeLineChartAnalysis([])
     expect(result.mean).toBe(0)
@@ -1234,5 +1187,467 @@ describe('copyAltTextForVersionsBarChart', () => {
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+describe('loadFile', () => {
+  let createElementMock: ReturnType<typeof vi.fn>
+  let clickMock: ReturnType<typeof vi.fn>
+  let removeMock: ReturnType<typeof vi.fn>
+  let originalDocument: typeof globalThis.document | undefined
+
+  beforeEach(() => {
+    clickMock = vi.fn()
+    removeMock = vi.fn()
+
+    createElementMock = vi.fn().mockReturnValue({
+      href: '',
+      download: '',
+      click: clickMock,
+      remove: removeMock,
+    })
+
+    originalDocument = globalThis.document
+
+    Object.defineProperty(globalThis, 'document', {
+      value: {
+        createElement: createElementMock,
+      },
+      configurable: true,
+      writable: true,
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+
+    Object.defineProperty(globalThis, 'document', {
+      value: originalDocument,
+      configurable: true,
+      writable: true,
+    })
+  })
+
+  it('creates an anchor element and triggers a download', () => {
+    const link = 'https://npmx.dev/file.png'
+    const filename = 'file.png'
+    loadFile(link, filename)
+    expect(createElementMock).toHaveBeenCalledWith('a')
+    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
+    expect(anchor.href).toBe(link)
+    expect(anchor.download).toBe(filename)
+    expect(clickMock).toHaveBeenCalledTimes(1)
+    expect(removeMock).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('sanitise', () => {
+  it('returns the same string when no sanitisation is needed', () => {
+    expect(sanitise('nuxt-package')).toBe('nuxt-package')
+  })
+
+  it('removes a leading @ character', () => {
+    expect(sanitise('@nuxt/ui')).toBe('nuxt-ui')
+  })
+
+  it('removes only the first leading @ character', () => {
+    expect(sanitise('@@scope/package')).toBe('@scope-package')
+  })
+
+  it('replaces forward slashes with dashes', () => {
+    expect(sanitise('scope/package/name')).toBe('scope-package-name')
+  })
+
+  it('replaces backslashes with dashes', () => {
+    expect(sanitise('scope\\package\\name')).toBe('scope-package-name')
+  })
+
+  it('replaces colon characters with dashes', () => {
+    expect(sanitise('name:with:colons')).toBe('name-with-colons')
+  })
+
+  it('replaces invalid filename characters with dashes', () => {
+    expect(sanitise('na<me>:"with"*?pipes|')).toBe('na-me---with---pipes-')
+  })
+
+  it('handles scoped package names correctly', () => {
+    expect(sanitise('@scope/package')).toBe('scope-package')
+  })
+
+  it('replaces mixed invalid characters in a single string', () => {
+    expect(sanitise('@scope/package:name*test?value<foo>|bar')).toBe(
+      'scope-package-name-test-value-foo--bar',
+    )
+  })
+
+  it('returns an empty string when given an empty string', () => {
+    expect(sanitise('')).toBe('')
+  })
+})
+
+describe('insertLineBreaks', () => {
+  it('returns an empty string when text is not a string', () => {
+    expect(insertLineBreaks(null as unknown as string)).toBe('')
+    expect(insertLineBreaks(undefined as unknown as string)).toBe('')
+    expect(insertLineBreaks(42 as unknown as string)).toBe('')
+    expect(insertLineBreaks({} as unknown as string)).toBe('')
+  })
+
+  it('returns the original text when maxCharactersPerLine is not a positive integer', () => {
+    expect(insertLineBreaks('hello world', 0)).toBe('hello world')
+    expect(insertLineBreaks('hello world', -1)).toBe('hello world')
+    expect(insertLineBreaks('hello world', 2.5)).toBe('hello world')
+    expect(insertLineBreaks('hello world', Number.NaN)).toBe('hello world')
+  })
+
+  it('returns the same text when it already fits on one line', () => {
+    expect(insertLineBreaks('hello world', 24)).toBe('hello world')
+  })
+
+  it('breaks text into multiple lines on word boundaries', () => {
+    expect(insertLineBreaks('hello world again', 11)).toBe('hello world\nagain')
+  })
+
+  it('preserves a single space between words when collapsing whitespace', () => {
+    expect(insertLineBreaks('hello     world', 24)).toBe('hello world')
+  })
+
+  it('ignores leading and trailing whitespace', () => {
+    expect(insertLineBreaks('   hello world   ', 24)).toBe('hello world')
+  })
+
+  it('handles tabs and newlines as whitespace separators', () => {
+    expect(insertLineBreaks('hello\tworld\nagain', 11)).toBe('hello world\nagain')
+  })
+
+  it('starts a new line when adding a word would exceed the limit', () => {
+    expect(insertLineBreaks('one two three', 7)).toBe('one two\nthree')
+  })
+
+  it('keeps a word on the current line when it exactly matches the limit', () => {
+    expect(insertLineBreaks('abc def', 7)).toBe('abc def')
+  })
+
+  it('splits a long token into chunks when it exceeds the limit', () => {
+    expect(insertLineBreaks('abcdefghijkl', 5)).toBe('abcde\nfghij\nkl')
+  })
+
+  it('pushes the current line before splitting a long token', () => {
+    expect(insertLineBreaks('hello abcdefghij', 5)).toBe('hello\nabcde\nfghij')
+  })
+
+  it('continues building lines after a split long token', () => {
+    expect(insertLineBreaks('abcdefghij klm nop', 5)).toBe('abcde\nfghij\nklm\nnop')
+  })
+
+  it('handles multiple consecutive long tokens', () => {
+    expect(insertLineBreaks('abcdefghijk lmnopqrs', 4)).toBe('abcd\nefgh\nijk\nlmno\npqrs')
+  })
+
+  it('returns an empty string for an empty input string', () => {
+    expect(insertLineBreaks('', 24)).toBe('')
+  })
+
+  it('returns an empty string for a whitespace-only string', () => {
+    expect(insertLineBreaks('     ', 24)).toBe('')
+    expect(insertLineBreaks('\n\t  ', 24)).toBe('')
+  })
+
+  it('uses the default maxCharactersPerLine value when omitted', () => {
+    expect(insertLineBreaks('one two three four five six')).toBe('one two three four five\nsix')
+  })
+})
+
+describe('applyEllipsis', () => {
+  it('returns an empty string when text is not a string', () => {
+    expect(applyEllipsis(null as unknown as string)).toBe('')
+    expect(applyEllipsis(undefined as unknown as string)).toBe('')
+    expect(applyEllipsis(42 as unknown as string)).toBe('')
+    expect(applyEllipsis({} as unknown as string)).toBe('')
+  })
+
+  it('returns the original text when maxLength is not a positive integer', () => {
+    expect(applyEllipsis('touching grass', 0)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', -1)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', 2.5)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', Number.NaN)).toBe('touching grass')
+  })
+
+  it('returns the original text when its length is less than maxLength', () => {
+    expect(applyEllipsis('grass', 10)).toBe('grass')
+  })
+
+  it('returns the original text when its length is equal to maxLength', () => {
+    expect(applyEllipsis('grass', 5)).toBe('grass')
+  })
+
+  it('truncates the text and appends an ellipsis when its length exceeds maxLength', () => {
+    expect(applyEllipsis('grass touching', 5)).toBe('grass...')
+  })
+
+  it('uses the default maxLength when omitted', () => {
+    const text = 'n'.repeat(46)
+    expect(applyEllipsis(text)).toBe(`${'n'.repeat(45)}...`)
+  })
+
+  it('returns an empty string for an empty input string', () => {
+    expect(applyEllipsis('')).toBe('')
+  })
+
+  it('handles maxLength equal to 1', () => {
+    expect(applyEllipsis('grass', 1)).toBe('g...')
+  })
+
+  it('preserves whitespace within the truncated portion', () => {
+    expect(applyEllipsis('you need to touch grass', 13)).toBe('you need to t...')
+  })
+})
+
+describe('createSeedNumber', () => {
+  it('returns the same hash for the same input', () => {
+    expect(createSeedNumber('react')).toBe(createSeedNumber('react'))
+    expect(createSeedNumber('vue')).toBe(createSeedNumber('vue'))
+  })
+
+  it('returns different hashes for different inputs', () => {
+    expect(createSeedNumber('react')).not.toBe(createSeedNumber('vue'))
+    expect(createSeedNumber('svelte')).not.toBe(createSeedNumber('solid'))
+  })
+
+  it('returns a 32 bit unsigned integer', () => {
+    const result = createSeedNumber('react')
+    expect(Number.isInteger(result)).toBe(true)
+    expect(result).toBeGreaterThanOrEqual(0)
+    expect(result).toBeLessThanOrEqual(4294967295)
+  })
+
+  it('handles an empty string', () => {
+    const result = createSeedNumber('')
+    expect(Number.isInteger(result)).toBe(true)
+    expect(result).toBeGreaterThanOrEqual(0)
+    expect(result).toBeLessThanOrEqual(4294967295)
+  })
+
+  it('is case sensitive', () => {
+    expect(createSeedNumber('react')).not.toBe(createSeedNumber('React'))
+  })
+})
+
+describe('createSeededSvgPattern', () => {
+  it('returns deterministic output for the same seed', () => {
+    const first = createSeededSvgPattern('react')
+    const second = createSeededSvgPattern('react')
+    expect(first).toEqual(second)
+  })
+
+  it('returns different output for different seeds', () => {
+    const first = createSeededSvgPattern('react')
+    const second = createSeededSvgPattern('vue')
+    expect(second).not.toEqual(first)
+  })
+
+  it('returns a valid pattern object shape', () => {
+    const result = createSeededSvgPattern('react')
+    expect(typeof result.width).toBe('number')
+    expect(typeof result.height).toBe('number')
+    expect(typeof result.rotation).toBe('number')
+    expect(typeof result.patternType).toBe('string')
+    expect(typeof result.contentMarkup).toBe('string')
+  })
+
+  it('uses default options when none are provided', () => {
+    const result = createSeededSvgPattern('react')
+    expect(result.width).toBeGreaterThanOrEqual(8)
+    expect(result.width).toBeLessThanOrEqual(20)
+    expect(result.height).toBe(result.width)
+    expect(result.contentMarkup.length).toBeGreaterThan(0)
+  })
+
+  it('uses the provided foreground and background colors', () => {
+    const result = createSeededSvgPattern('react', {
+      foregroundColor: '#ff0000',
+      backgroundColor: '#00ff00',
+    })
+    expect(result.contentMarkup).toContain('#ff0000')
+    expect(result.contentMarkup).toContain('#00ff00')
+    expect(result.contentMarkup).toContain('<rect x="0" y="0"')
+  })
+
+  it('does not inject a background rect when backgroundColor is transparent', () => {
+    const result = createSeededSvgPattern('react', {
+      backgroundColor: 'transparent',
+    })
+    expect(result.contentMarkup).not.toContain('<rect x="0" y="0"')
+  })
+
+  it('respects the provided size range', () => {
+    const result = createSeededSvgPattern('react', {
+      minimumSize: 10,
+      maximumSize: 16,
+    })
+    expect(result.width).toBeGreaterThanOrEqual(10)
+    expect(result.width).toBeLessThanOrEqual(16)
+    expect(result.height).toBe(result.width)
+  })
+
+  it('always returns one of the supported pattern types', () => {
+    const allowedPatternTypes = [
+      'diagonalLines',
+      'verticalLines',
+      'horizontalLines',
+      'crosshatch',
+      'dots',
+      'grid',
+      'zigzag',
+    ]
+    const result = createSeededSvgPattern('react')
+    expect(allowedPatternTypes).toContain(result.patternType)
+  })
+
+  it('returns a supported rotation value', () => {
+    const allowedRotations = [0, 15, 30, 45, 60, 75, 90, 120, 135]
+    const result = createSeededSvgPattern('react')
+    expect(allowedRotations).toContain(result.rotation)
+  })
+
+  it('returns svg markup matching the selected pattern type', () => {
+    const seeds = [
+      'react',
+      'vue',
+      'svelte',
+      'solid',
+      'angular',
+      'ember',
+      'preact',
+      'lit',
+      'alpine',
+      'nuxt',
+      'next',
+      'astro',
+      'qwik',
+      'backbone',
+    ]
+
+    const expectedTagByPatternType: Record<
+      ReturnType<typeof createSeededSvgPattern>['patternType'],
+      string
+    > = {
+      diagonalLines: '<line',
+      verticalLines: '<line',
+      horizontalLines: '<line',
+      crosshatch: '<line',
+      dots: '<circle',
+      grid: '<line',
+      zigzag: '<path',
+    }
+
+    for (const seed of seeds) {
+      const result = createSeededSvgPattern(seed)
+      const expectedTag = expectedTagByPatternType[result.patternType]
+      expect(result.contentMarkup).toContain(expectedTag)
+    }
+  })
+
+  it('accepts numeric seeds', () => {
+    const result = createSeededSvgPattern(12345)
+    expect(typeof result.width).toBe('number')
+    expect(typeof result.contentMarkup).toBe('string')
+    expect(result.contentMarkup.length).toBeGreaterThan(0)
+  })
+
+  it('returns deterministic output for equivalent numeric and string seeds', () => {
+    const numericSeedResult = createSeededSvgPattern(12345)
+    const stringSeedResult = createSeededSvgPattern('12345')
+    expect(numericSeedResult).toEqual(stringSeedResult)
+  })
+})
+
+describe('createChartPatternSlotMarkup', () => {
+  it('returns a pattern element with the provided id', () => {
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 7,
+      color: '#ff0000',
+      foregroundColor: '#ffffff',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain('<pattern')
+    expect(result).toContain('id="pattern-1"')
+    expect(result).toContain('patternUnits="userSpaceOnUse"')
+    expect(result).toContain('</pattern>')
+  })
+
+  it('includes width, height, rotation, and content markup from the generated pattern', () => {
+    const generatedPattern = createSeededSvgPattern(1, {
+      foregroundColor: '#000',
+      backgroundColor: 'transparent',
+      minimumSize: 16,
+      maximumSize: 24,
+    })
+
+    const result = createChartPatternSlotMarkup({
+      id: 'pattern-1',
+      seed: 1,
+      foregroundColor: '#000',
+      fallbackColor: 'transparent',
+      maxSize: 24,
+      minSize: 16,
+    })
+
+    expect(result).toContain(`width="${generatedPattern.width}"`)
+    expect(result).toContain(`height="${generatedPattern.height}"`)
+    expect(result).toContain(`patternTransform="rotate(${generatedPattern.rotation})"`)
+    expect(result).toContain(generatedPattern.contentMarkup)
+  })
+
+  it('is deterministic for the same inputs', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-stable',
+      seed: 'nuxt',
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).toBe(second)
+  })
+
+  it('changes when the id changes', () => {
+    const first = createChartPatternSlotMarkup({
+      id: 'pattern-a',
+      seed: 1,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    const second = createChartPatternSlotMarkup({
+      id: 'pattern-b',
+      seed: 2,
+      color: '#00ff00',
+      foregroundColor: '#000000',
+      fallbackColor: 'transparent',
+      maxSize: 40,
+      minSize: 10,
+    })
+
+    expect(first).not.toBe(second)
   })
 })

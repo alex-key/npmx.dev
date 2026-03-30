@@ -1,13 +1,3 @@
-import type {
-  Packument,
-  SlimPackument,
-  SlimVersion,
-  SlimPackumentVersion,
-  PackumentVersion,
-  PublishTrustLevel,
-} from '#shared/types'
-import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 
@@ -47,7 +37,7 @@ export function transformPackument(
       const timeA = pkg.time[a]
       const timeB = pkg.time[b]
       if (!timeA || !timeB) return 0
-      return new Date(timeB).getTime() - new Date(timeA).getTime()
+      return Date.parse(timeB) - Date.parse(timeA)
     })
     .slice(0, RECENT_VERSIONS_COUNT)
 
