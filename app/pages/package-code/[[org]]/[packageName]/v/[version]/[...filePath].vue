@@ -288,9 +288,9 @@ defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
 })
 
-onPrehydrate(() => {
+onPrehydrate(el => {
   const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const container = document.getElementById('code-page-container')
+  const container = el.getElementById('code-page-container')
 
   if (settingsSaved?.codeContainerFull === true && container) {
     console.log('add max-w-full')
