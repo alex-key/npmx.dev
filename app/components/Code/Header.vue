@@ -24,7 +24,7 @@ const emit = defineEmits<{
   'mobile-tree-drawer-toggle': []
 }>()
 
-const { codeContainerFull, toggleCodeContainer } = useCodeContainer()
+const { toggleCodeContainer } = useCodeContainer()
 
 const markdownViewModes = [
   {
@@ -254,9 +254,7 @@ useEventListener('keydown', (event: KeyboardEvent) => {
           <ButtonBase
             class="px-3 max-xl:hidden"
             :disabled="loading"
-            :classicon="
-              codeContainerFull ? 'i-lucide:fold-horizontal' : 'i-lucide:unfold-horizontal'
-            "
+            classicon="i-lucide:unfold-horizontal [.container-full>&]:i-lucide:fold-horizontal"
             :aria-label="$t('code.toggle_container')"
             @click="toggleCodeContainer()"
           />

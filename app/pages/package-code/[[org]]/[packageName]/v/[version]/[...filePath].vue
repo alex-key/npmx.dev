@@ -290,11 +290,10 @@ defineOgImageComponent('Default', {
 
 onPrehydrate(el => {
   const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const container = el.getElementById('code-page-container')
+  const container = el.querySelector('#code-page-container')
 
   if (settingsSaved?.codeContainerFull === true && container) {
-    console.log('add max-w-full')
-    container!.classList.add('max-w-full', 'border-0')
+    container.classList.add('container-full')
   }
 })
 </script>
@@ -336,8 +335,8 @@ onPrehydrate(el => {
     <div
       v-else-if="!!fileTree"
       id="code-page-container"
-      class="w-full grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-x px-0 mx-auto transition-[max-width] duration-300"
-      :class="[codeContainerFull ? 'max-w-full border-0' : 'container']"
+      class="w-full container grid grid-cols-[18rem_1fr] max-lg:grid-cols-[16rem_1fr] max-md:grid-cols-[1fr] border-border border-x px-0 mx-auto transition-[max-width] duration-300"
+      :class="codeContainerFull ? 'container-full' : ''"
       dir="ltr"
     >
       <!-- File tree sidebar - sticky with internal scroll -->
@@ -479,3 +478,9 @@ onPrehydrate(el => {
     </ClientOnly>
   </main>
 </template>
+
+<style>
+.container-full.container-full {
+  @apply max-w-full border-0;
+}
+</style>

@@ -81,8 +81,6 @@ const STORAGE_KEY = 'npmx-settings'
 // Shared settings instance (singleton per app)
 let settingsRef: RemovableRef<AppSettings> | null = null
 
-const hasHydrated = ref(false)
-
 /**
  * Composable for managing application settings with localStorage persistence.
  * Settings are shared across all components that use this composable.
@@ -244,11 +242,7 @@ export function useBackgroundTheme() {
 export function useCodeContainer() {
   const { settings } = useSettings()
 
-  onMounted(() => {
-    hasHydrated.value = true
-  })
-
-  const codeContainerFull = computed(() => hasHydrated.value && settings.value.codeContainerFull)
+  const codeContainerFull = computed(() => settings.value.codeContainerFull)
 
   function toggleCodeContainer() {
     settings.value.codeContainerFull = !settings.value.codeContainerFull
